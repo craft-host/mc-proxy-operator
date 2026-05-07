@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jugador2-minecraft-bedrock
+  namespace: mc-servers
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minecraft
+      user: jugador2
+      edition: bedrock
+  template:
+    metadata:
+      labels:
+        app: minecraft
+        user: jugador2
+        edition: bedrock
+    spec:
+      containers:
+        - name: minecraft-bedrock
+          image: itzg/minecraft-bedrock-server:latest
+          ports:
+            - containerPort: 19132
+              protocol: UDP
+          env:
+            - name: EULA
+              value: "TRUE"
+            - name: GAMEMODE
+              value: "survival"
+          resources:
+            requests:
+              cpu: 500m
+              memory: 1Gi
+            limits:
+              cpu: "2"
+              memory: 2Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jugador2-minecraft-bedrock
+  namespace: mc-servers
+spec:
+  selector:
+    app: minecraft
+    user: jugador2
+  ports:
+    - port: 19132
+      targetPort: 19132
+      protocol: UDP
+---
+apiVersion: minecraft.miminecraftserver.com/v1alpha1
+kind: MinecraftProxy
+metadata:
+  name: jugador2-bedrock
+  namespace: minecraft-system
+spec:
+  edition: bedrock
+  hostname: "jugador2.miminecraftserver.com"
+  backend:
+    serviceName: "jugador2-minecraft-bedrock"
+    servicePort: 19132
+    namespace: "mc-servers"
+  maxPlayers: 10

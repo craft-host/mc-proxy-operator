@@ -1,0 +1,14 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: mc-proxy-operator-role
+rules:
+  - apiGroups: ["minecraft.miminecraftserver.com"]
+    resources: ["minecraftproxies"]
+    verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+  - apiGroups: ["minecraft.miminecraftserver.com"]
+    resources: ["minecraftproxies/status"]
+    verbs: ["get", "update", "patch"]
+  - apiGroups: ["minecraft.miminecraftserver.com"]
+    resources: ["minecraftproxies/finalizers"]
+    verbs: ["update"]

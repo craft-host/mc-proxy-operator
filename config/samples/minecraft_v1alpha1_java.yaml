@@ -1,0 +1,15 @@
+apiVersion: minecraft.miminecraftserver.com/v1alpha1
+kind: MinecraftProxy
+metadata:
+  name: jugador1-java
+  namespace: minecraft-system
+spec:
+  edition: java
+  hostname: "jugador1.miminecraftserver.com"
+  backend:
+    serviceName: "jugador1-minecraft"
+    servicePort: 25565
+    namespace: "mc-servers"
+  maxPlayers: 20
+  rateLimit:
+    connectionsPerMinute: 10

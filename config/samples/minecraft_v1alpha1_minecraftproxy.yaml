@@ -1,0 +1,9 @@
+apiVersion: minecraft.miminecraftserver.com/v1alpha1
+kind: MinecraftProxy
+metadata:
+  labels:
+    app.kubernetes.io/name: proxy
+    app.kubernetes.io/managed-by: kustomize
+  name: minecraftproxy-sample
+spec:
+  # TODO(user): Add fields here

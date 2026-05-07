@@ -1,0 +1,80 @@
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: jugador1-minecraft
+#   namespace: mc-servers
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: minecraft
+#       user: jugador1
+#       edition: java
+#   template:
+#     metadata:
+#       labels:
+#         app: minecraft
+#         user: jugador1
+#         edition: java
+#     spec:
+#       containers:
+#         - name: minecraft
+#           image: itzg/minecraft-server:latest
+#           ports:
+#             - containerPort: 25565
+#           env:
+#             - name: EULA
+#               value: "TRUE"
+#             - name: TYPE
+#               value: "PAPER"
+#             - name: MEMORY
+#               value: "2G"
+#           resources:
+#             requests:
+#               cpu: 500m
+#               memory: 2Gi
+#             limits:
+#               cpu: "2"
+#               memory: 4Gi
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: jugador1-minecraft
+#   namespace: mc-servers
+# spec:
+#   selector:
+#     app: minecraft
+#     user: jugador1
+#   ports:
+#     - port: 25565
+#       targetPort: 25565
+#       protocol: TCP
+# ---
+apiVersion: minecraft.miminecraftserver.com/v1alpha1
+kind: MinecraftProxy
+metadata:
+  name: jugador1-java
+  namespace: minecraft-system
+spec:
+  edition: java
+  hostname: "jugador1.miminecraftserver.com"
+  backend:
+    serviceName: "mc-svc-14a51295-f674-4a84-a330-eb3a979f2318"
+    servicePort: 25577
+    namespace: "minecraft-servers"
+  maxPlayers: 20
+---
+apiVersion: minecraft.miminecraftserver.com/v1alpha1
+kind: MinecraftProxy
+metadata:
+  name: jugador1-java
+  namespace: minecraft-system
+spec:
+  edition: java
+  hostname: "jugador2.miminecraftserver.com"
+  backend:
+    serviceName: "mc-svc-2909ae1b-f90e-478f-8528-1ae598cebe6e"
+    servicePort: 25896
+    namespace: "minecraft-servers"
+  maxPlayers: 20

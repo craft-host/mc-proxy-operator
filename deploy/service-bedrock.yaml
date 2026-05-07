@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mc-proxy-bedrock
+  namespace: minecraft-system
+spec:
+  type: LoadBalancer
+  selector:
+    control-plane: controller-manager
+  ports:
+    - port: 19132
+      targetPort: 19132
+      protocol: UDP
+      name: bedrock-default
